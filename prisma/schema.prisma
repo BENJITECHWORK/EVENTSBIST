@@ -14,36 +14,47 @@ datasource db {
 }
 
 model User {
-    id        Int      @id @default(autoincrement())
-    email     String   @db.VarChar(255) @unique
-    firstName String   @db.VarChar(255)
-    lastName  String   @db.VarChar(255)
-    password  String   @db.VarChar(255)
-    phone_number  String   @db.VarChar(15)
-    createdAt DateTime @default(now())
-    roleId    Int     
-    role      Role     @relation(fields: [roleId], references: [id])
-    profile Service?
+  id              Int              @id @default(autoincrement())
+  email           String           @unique @db.VarChar(255)
+  firstName       String           @db.VarChar(255)
+  lastName        String           @db.VarChar(255)
+  password        String           @db.VarChar(255)
+  phone_number    String           @db.VarChar(15)
+  createdAt       DateTime         @default(now())
+  roleId          Int
+  role            Role             @relation(fields: [roleId], references: [id])
+  profilePic      String           @db.VarChar(255)
+  profile         Service?
+  location        String?
+  ServiceCategory ServiceCategory?
 }
 
 model Role {
-    id        Int      @id @default(autoincrement())
-    name      String   @db.VarChar(255) @unique
-    createdAt DateTime @default(now())
-    users     User[]
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+  users     User[]
 }
-
 
 model Service {
-    id        Int      @id @default(autoincrement())
-    service_name       String   @db.VarChar(255) @unique
-    service_description String   @db.VarChar(255)
-    service_price  Decimal
-    service_category  String   @db.VarChar(255)
-    user      User     @relation(fields: [userId], references: [id])
-    userId    Int      @unique
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    deletedAt DateTime?
+  id                  Int       @id @default(autoincrement())
+  service_name        String    @unique @db.VarChar(255)
+  service_description String    @db.VarChar(255)
+  service_price       Decimal
+  user                User      @relation(fields: [userId], references: [id])
+  userId              Int       @unique
+  service_category    ServiceCategory   @relation(fields: [service_category_id], references: [service_category_id])
+  service_category_id Int         
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  deletedAt           DateTime?
 }
 
+model ServiceCategory {
+  service_category_id Int  @id @default(autoincrement())
+  service_category_name String
+  service_category_description String
+  user                User @relation(fields: [userId], references: [id])
+  userId              Int  @unique  
+  services            Service[]
+}
