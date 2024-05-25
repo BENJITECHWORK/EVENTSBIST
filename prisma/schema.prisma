@@ -23,10 +23,10 @@ model User {
   createdAt       DateTime         @default(now())
   roleId          Int
   role            Role             @relation(fields: [roleId], references: [id])
-  profilePic      String           @db.VarChar(255)
+  profilePic      String?           @db.VarChar(255)
   profile         Service?
   location        String?
-  ServiceCategory ServiceCategory?
+  ServiceCategory ServiceCategory[]
 }
 
 model Role {
@@ -52,9 +52,9 @@ model Service {
 
 model ServiceCategory {
   service_category_id Int  @id @default(autoincrement())
-  service_category_name String
+  service_category_name String @unique @db.VarChar(255)
   service_category_description String
   user                User @relation(fields: [userId], references: [id])
-  userId              Int  @unique  
+  userId              Int  
   services            Service[]
 }

@@ -39,7 +39,8 @@ exports.authorizeRequest=async(req,res,next)=>{
 
 /*************************ROLE CHECK***************************************** */
 exports.checkRole=(role)=>async(req,res,next)=>{
-    if(req.user.user.roleId !== role){
+  
+    if(req?.user.user.roleId !== role){
         return res.status(401).json({
             success:false,
             message:"Permission Denied"
