@@ -41,10 +41,13 @@ model Service {
   service_name        String    @unique @db.VarChar(255)
   service_description String    @db.VarChar(255)
   service_price       Decimal
+  isBooked            Boolean   @default(false)
+  client_interest     Boolean   @default(false)
   user                User      @relation(fields: [userId], references: [id])
   userId              Int       @unique
   service_category    ServiceCategory   @relation(fields: [service_category_id], references: [service_category_id])
-  service_category_id Int         
+  service_category_id Int   
+  onPromotion         Boolean   @default(false)      
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
   deletedAt           DateTime?
@@ -58,3 +61,15 @@ model ServiceCategory {
   userId              Int  
   services            Service[]
 }
+
+
+
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  senderId  String
+  recipientId String
+  message   String
+  timestamp DateTime @default(now())
+}
+

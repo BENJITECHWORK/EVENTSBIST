@@ -9,7 +9,7 @@ exports.createService = async (req, res) => {
       service_name,
       service_description,
       service_price,
-      service_category,
+      service_category_id,
       userId,
     } = req.body;
     //check whether field exists
@@ -17,7 +17,7 @@ exports.createService = async (req, res) => {
       !service_name ||
       !service_description ||
       !service_price ||
-      !service_category ||
+      !service_category_id ||
       !userId
     ) {
       return res.status(404).json({
@@ -41,7 +41,7 @@ exports.createService = async (req, res) => {
     /********************************* Create a Service ************************/
     const newService = await prisma.service.create({
       data: {
-        service_category,
+        service_category_id,
         service_name,
         service_description,
         service_price,
@@ -68,6 +68,27 @@ exports.getAllServicesByUserId = async (req, res) => {
     const services = await prisma.service.findMany({
       where: {
         userId: parseInt(userId),
+      },
+    });
+    return res.status(200).json({
+      success: true,
+      services,
+    });
+  } catch (error) {
+    console.log("error", error);
+    return res.status(500).json({
+      error: error,
+      success: false,
+    });
+  }
+};
+
+exports.getAllServicesByCategory = async (req, res) => {
+  try {
+    const { service_category_id } = req.params;
+    const services = await prisma.service.findMany({
+      where: {
+        service_category_id: parseInt(service_category_id),
       },
     });
     return res.status(200).json({

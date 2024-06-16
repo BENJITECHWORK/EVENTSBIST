@@ -31,8 +31,11 @@ CREATE TABLE `Service` (
     `service_name` VARCHAR(255) NOT NULL,
     `service_description` VARCHAR(255) NOT NULL,
     `service_price` DECIMAL(65, 30) NOT NULL,
+    `isBooked` BOOLEAN NOT NULL DEFAULT false,
+    `client_interest` BOOLEAN NOT NULL DEFAULT false,
     `userId` INTEGER NOT NULL,
     `service_category_id` INTEGER NOT NULL,
+    `onPromotion` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `deletedAt` DATETIME(3) NULL,
@@ -51,6 +54,17 @@ CREATE TABLE `ServiceCategory` (
 
     UNIQUE INDEX `ServiceCategory_service_category_name_key`(`service_category_name`),
     PRIMARY KEY (`service_category_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Message` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `senderId` VARCHAR(191) NOT NULL,
+    `recipientId` VARCHAR(191) NOT NULL,
+    `message` VARCHAR(191) NOT NULL,
+    `timestamp` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
