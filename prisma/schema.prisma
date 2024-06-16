@@ -24,9 +24,10 @@ model User {
   roleId          Int
   role            Role             @relation(fields: [roleId], references: [id])
   profilePic      String?           @db.VarChar(255)
-  profile         Service?
+  profile         String?           @db.VarChar(255)
   location        String?
-  ServiceCategory ServiceCategory[]
+  serviceCategories ServiceCategory[]
+  services        Service[]
 }
 
 model Role {
@@ -44,7 +45,7 @@ model Service {
   isBooked            Boolean   @default(false)
   client_interest     Boolean   @default(false)
   user                User      @relation(fields: [userId], references: [id])
-  userId              Int       @unique
+  userId              Int       
   service_category    ServiceCategory   @relation(fields: [service_category_id], references: [service_category_id])
   service_category_id Int   
   onPromotion         Boolean   @default(false)      

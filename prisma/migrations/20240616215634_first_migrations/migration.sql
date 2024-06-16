@@ -9,6 +9,7 @@ CREATE TABLE `User` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `roleId` INTEGER NOT NULL,
     `profilePic` VARCHAR(255) NULL,
+    `profile` VARCHAR(255) NULL,
     `location` VARCHAR(191) NULL,
 
     UNIQUE INDEX `User_email_key`(`email`),
@@ -41,7 +42,6 @@ CREATE TABLE `Service` (
     `deletedAt` DATETIME(3) NULL,
 
     UNIQUE INDEX `Service_service_name_key`(`service_name`),
-    UNIQUE INDEX `Service_userId_key`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
