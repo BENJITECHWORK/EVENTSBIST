@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # specifies a port number for our image to run in a docker container
-EXPOSE 4000
+EXPOSE 5000
 
 RUN npx prisma db push --accept-data-loss
 # command to run our docker image in container

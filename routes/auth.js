@@ -11,6 +11,7 @@ const {
 } = require('../controllers/auth');
 const { createService, getAllServicesByUserId, getServiceById, updateService, deleteService, getAllServicesByCategory } = require('../controllers/serviceController');
 const { createServiceCategory, getAllServicesCategories, updateServiceCategory, deleteServiceCategory } = require('../controllers/serviceCategoryController');
+const { createEventType, getAllEventTypes } = require('../controllers/eventTypeController');
 
 
 router.post('/register', register);
@@ -30,10 +31,13 @@ router.delete('/services/:serviceId',deleteService)
 
 /*  Service Category Routes */
 router.post('/service/categories',authorizeRequest,checkRole(1), createServiceCategory)
-router.get('/service/categories',authorizeRequest, checkRole(1),getAllServicesCategories)
+router.get('/service/categories',authorizeRequest, getAllServicesCategories)
 router.patch('/service/category/:serviceCategoryId',authorizeRequest,checkRole(1),updateServiceCategory)
 router.delete('/service/category/:serviceCategoryId',authorizeRequest,checkRole(1),deleteServiceCategory)
 
+/* Events */
+router.post('/events/create',createEventType)
+router.get('/events/types',getAllEventTypes)
 
 
 
