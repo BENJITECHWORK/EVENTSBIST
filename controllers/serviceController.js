@@ -173,11 +173,11 @@ exports.deleteService = async (req, res) => {
     const { serviceId } = req.params;
     // Check if the service exists
     const serviceExists = await prisma.service.findUnique({
-        where: { id: Number(serviceId) },
+      where: { id: Number(serviceId) },
     });
 
     if (!serviceExists) {
-        return res.status(404).json({ message: "Service not found" });
+      return res.status(404).json({ message: "Service not found" });
     }
     const service = await prisma.service.delete({
       where: {
@@ -187,6 +187,27 @@ exports.deleteService = async (req, res) => {
     return res.status(200).json({
       success: true,
       service,
+    });
+  } catch (error) {
+    console.log("error", error);
+    return res.status(500).json({
+      error: error,
+      success: false,
+    });
+  }
+};
+
+exports.getAllServices = async (req, res) => {
+  try {
+    const services = await prisma.service.findMany({
+      include: {
+        user: true, 
+        service_category: true 
+      }
+    });
+    return res.status(200).json({
+      success: true,
+      services,
     });
   } catch (error) {
     console.log("error", error);

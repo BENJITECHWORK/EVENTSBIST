@@ -50,31 +50,40 @@ io.on("connection", (socket) => {
     io.emit("messageResponse", data);
   });
 
-  //Listens when a new user joins the server
-  socket.on("newUser", (data) => {
-    //Adds the new user to the list of users
-    users.push(data);
-    // console.log(users);
-    //Sends the list of users to the client
-    io.emit("newUserResponse", users);
+  socket.on("newUser", async (data) => {
+    try {
+      // Add the user to the in-memory users list
+      users.push({ id: socket.id, name: data.name, });
+      io.emit("newUserResponse", users);
+    } catch (error) {
+      console.error("Error adding new user:", error);
+    }
   });
 
-   // Listen for direct messages
-   socket.on("directMessage", async ({ recipientId, message }) => {
+
+  socket.on("directMessage", async ({ recipientId, message }) => {
+    console.log("users", users)
     try {
-      // Store the message in the database using Prisma
-      await prisma.message.create({
+      const sender = users.find(user => user.id === socket.id);
+      const recipient = users.find(user => user.id === recipientId);
+
+      if (!sender || !recipient) {
+        console.error("Sender or recipient not found");
+        return;
+      }
+
+      const newMessage = await prisma.message.create({
         data: {
-          senderId: socket.id,
-          recipientId,
-          message,
+          senderId: sender.id,
+          recipientId: recipient.id,
+          content: message,
         },
       });
 
-      // Send the message to the specific user
       io.to(recipientId).emit("directMessage", {
-        senderId: socket.id,
-        message,
+        senderId: sender.id,
+        message: newMessage.content,
+        createdAt: newMessage.createdAt,
       });
     } catch (error) {
       console.error("Error sending direct message:", error);
