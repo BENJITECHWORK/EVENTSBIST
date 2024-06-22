@@ -16,6 +16,7 @@ const {
 const { createService, getAllServicesByUserId, getServiceById, updateService, deleteService, getAllServicesByCategory, getAllServices } = require('../controllers/serviceController');
 const { createServiceCategory, getAllServicesCategories, updateServiceCategory, deleteServiceCategory } = require('../controllers/serviceCategoryController');
 const { createEventType, getAllEventTypes } = require('../controllers/eventTypeController');
+const { createBooking, getAllBookings, getBookingsByOrganizer, getBookingsByServiceProvider } = require('../controllers/bookingController');
 
 
 router.post('/register', register);
@@ -43,6 +44,12 @@ router.delete('/service/category/:serviceCategoryId',authorizeRequest,checkRole(
 /* Events */
 router.post('/events/create',createEventType)
 router.get('/events/types',getAllEventTypes)
+
+/*Bookings */
+router.post('/bookings/create', createBooking);
+router.get('/bookings', getAllBookings);
+router.get('/bookings/organizer/:organizerId', getBookingsByOrganizer);
+router.get('/bookings/provider/:providerId', getBookingsByServiceProvider);
 
 
 router.get("/chat-history/:userId1/:userId2", async (req, res) => {
