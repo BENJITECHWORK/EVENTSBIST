@@ -1,0 +1,7 @@
+BookingSchema:
+    event_date
+    even_name
+    event_type(Foreign Key From Event type Table)
+    Location
+    event_organizer(id of organizer)
+    service_provider_id (foreign key fro service Provider)

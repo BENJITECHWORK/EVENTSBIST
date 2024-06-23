@@ -13,7 +13,7 @@ const {
     generatePasswordToken,
     updatePassword,
 } = require('../controllers/auth');
-const { createService, getAllServicesByUserId, getServiceById, updateService, deleteService, getAllServicesByCategory, getAllServices } = require('../controllers/serviceController');
+const { createService, getAllServicesByUserId, getServiceById, updateService, deleteService, getAllServicesByCategory, getAllServices, getAllServicesBySelectedCategory } = require('../controllers/serviceController');
 const { createServiceCategory, getAllServicesCategories, updateServiceCategory, deleteServiceCategory } = require('../controllers/serviceCategoryController');
 const { createEventType, getAllEventTypes } = require('../controllers/eventTypeController');
 
@@ -33,9 +33,13 @@ router.patch('/services/:serviceId',updateService)
 router.delete('/services/:serviceId',deleteService)
 router.get('/services',getAllServices)
 
+//
+router.get('/services/selected_categories/:selectedCategoryIds',getAllServicesBySelectedCategory)
+
+
 
 /*  Service Category Routes */
-router.post('/service/categories',authorizeRequest,checkRole(1), createServiceCategory)
+router.post('/service/categories',authorizeRequest, createServiceCategory) //checkRole(1),
 router.get('/service/categories',authorizeRequest, getAllServicesCategories)
 router.patch('/service/category/:serviceCategoryId',authorizeRequest,checkRole(1),updateServiceCategory)
 router.delete('/service/category/:serviceCategoryId',authorizeRequest,checkRole(1),deleteServiceCategory)
