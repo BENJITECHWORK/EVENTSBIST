@@ -222,12 +222,16 @@ exports.getAllServicesBySelectedCategory = async (req, res) => {
   try {
     const { selectedCategoryIds } = req.params;
     const results = JSON.parse(selectedCategoryIds);
-    console.log("results", results);
+   
     const services = await prisma.service.findMany({
       where: {
         OR: results.map(categoryId => ({
           service_category_id: categoryId,
         })),
+      },
+      include: {
+        user: true, // Assuming the service has a relation with user
+        service_category: true,
       },
     });
 
