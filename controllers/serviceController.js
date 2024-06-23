@@ -201,13 +201,39 @@ exports.getAllServices = async (req, res) => {
   try {
     const services = await prisma.service.findMany({
       include: {
-        user: true, 
-        service_category: true 
-      }
+        user: true,
+        service_category: true,
+      },
     });
     return res.status(200).json({
       success: true,
       services,
+    });
+  } catch (error) {
+    console.log("error", error);
+    return res.status(500).json({
+      error: error,
+      success: false,
+    });
+  }
+};
+
+exports.getAllServicesBySelectedCategory = async (req, res) => {
+  try {
+    const { selectedCategoryIds } = req.params;
+    const results = JSON.parse(selectedCategoryIds);
+    console.log("results", results);
+    const services = await prisma.service.findMany({
+      where: {
+        OR: results.map(categoryId => ({
+          service_category_id: categoryId,
+        })),
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      services
     });
   } catch (error) {
     console.log("error", error);

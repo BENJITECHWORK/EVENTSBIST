@@ -15,7 +15,7 @@ async function getServicesByAllCategories(selectedCategoryIds = []) {
   }
 
 // Example usage:
-const selectedCategoryIds = [6, 3]; // Replace with actual category IDs selected by the user
+const selectedCategoryIds = [18]; // Replace with actual category IDs selected by the user
 getServicesByAllCategories(selectedCategoryIds)
   .then(services => {
     console.log(services);
