@@ -12,9 +12,9 @@ const prisma = new PrismaClient();
 exports.register = async(req,res) => {
 
     try {
-        const { lastName, firstName, password, email, phone_number, role } = req.body
+        const { lastName, firstName, password, email, phone_number, role,location } = req.body
         //check whether field exists
-        if (!password || !lastName || !firstName ||!email ||!phone_number ||!role) {
+        if (!password || !lastName || !firstName ||!email ||!phone_number ||!role ||!location) {
             return res.status(404).json({
                 success: false,
                 message: "This Field Cannot be empty"
@@ -43,7 +43,8 @@ exports.register = async(req,res) => {
                     firstName: firstName,
                     email: email,
                     phone_number:phone_number,
-                    roleId: role
+                    roleId: role,
+                    location: location
                }
            })
     

@@ -51,7 +51,7 @@ exports.createEventType = async (req, res) => {
 
 exports.getAllEventTypes = async (req, res) => {
   try {
-    const eventTypes = await prisma.eventType.findMany();
+    const eventTypes = await prisma.eventType.findMany({});
     return res.status(200).json({
       success: true,
       eventTypes,
