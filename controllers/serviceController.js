@@ -222,12 +222,13 @@ exports.getAllServicesBySelectedCategory = async (req, res) => {
   try {
     const { selectedCategoryIds } = req.params;
     const results = JSON.parse(selectedCategoryIds);
-   
+
     const services = await prisma.service.findMany({
       where: {
         OR: results.map(categoryId => ({
           service_category_id: categoryId,
         })),
+        isBooked: false,
       },
       include: {
         user: true, // Assuming the service has a relation with user
@@ -247,3 +248,83 @@ exports.getAllServicesBySelectedCategory = async (req, res) => {
     });
   }
 };
+
+
+exports.adminAddPromotion = async (req, res) => {
+  const { promotion_price, service_id } = req.body;
+
+  if (!promotion_price || !service_id) {
+    return res.status(404).json({
+      success: false,
+      message: "This Field Cannot be empty",
+    });
+  }
+
+  const existingService = await prisma.service.findUnique({
+    where: {
+      id: service_id,
+    },
+  });
+
+  if (!existingService) {
+    return res.status(404).json({
+      success: false,
+      message: "Service does not exist",
+    });
+  }
+
+  await prisma.service.update({
+    where: {
+      id: service_id,
+    },
+    data: {
+      promotion_price,
+      onPromotion: true,
+    },
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "Service Promotion Added Successfully",
+  });
+
+}
+
+exports.markServiceAsBooked = async (req, res) => {
+  const { service_id, book_date } = req.body;
+
+  if (!service_id || !book_date) {
+    return res.status(404).json({
+      success: false,
+      message: "This Field Cannot be empty",
+    });
+  }
+
+  const existingService = await prisma.service.findUnique({
+    where: {
+      id: service_id,
+    },
+  });
+
+  if (!existingService) {
+    return res.status(404).json({
+      success: false,
+      message: "Service does not exist",
+    });
+  }
+
+  await prisma.service.update({
+    where: {
+      id: service_id,
+    },
+    data: {
+      isBooked: true,
+      booking_date: book_date
+    },
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "Service Marked as Booked Successfully",
+  });
+}

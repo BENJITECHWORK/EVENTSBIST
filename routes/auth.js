@@ -13,9 +13,10 @@ const {
     generatePasswordToken,
     updatePassword,
 } = require('../controllers/auth');
-const { createService, getAllServicesByUserId, getServiceById, updateService, deleteService, getAllServicesByCategory, getAllServices, getAllServicesBySelectedCategory } = require('../controllers/serviceController');
+const { createService, getAllServicesByUserId, getServiceById, updateService, deleteService, getAllServicesByCategory, getAllServices, getAllServicesBySelectedCategory, adminAddPromotion, markServiceAsBooked } = require('../controllers/serviceController');
 const { createServiceCategory, getAllServicesCategories, updateServiceCategory, deleteServiceCategory } = require('../controllers/serviceCategoryController');
 const { createEventType, getAllEventTypes } = require('../controllers/eventTypeController');
+const { getDashboardStats } = require('../controllers/dashboardController');
 
 
 router.post('/register', register);
@@ -43,10 +44,17 @@ router.post('/service/categories',authorizeRequest, createServiceCategory) //che
 router.get('/service/categories',authorizeRequest, getAllServicesCategories)
 router.patch('/service/category/:serviceCategoryId',authorizeRequest,checkRole(1),updateServiceCategory)
 router.delete('/service/category/:serviceCategoryId',authorizeRequest,checkRole(1),deleteServiceCategory)
+router.post('/services/book',markServiceAsBooked)
 
 /* Events */
 router.post('/events/create',createEventType)
 router.get('/events/types',getAllEventTypes)
+
+
+router.get('/dashboard',getDashboardStats);
+
+/* Promotions */
+router.post('/promotions/add',adminAddPromotion)
 
 
 router.get("/chat-history/:userId1/:userId2", async (req, res) => {

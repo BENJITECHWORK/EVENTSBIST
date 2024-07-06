@@ -52,6 +52,8 @@ model Service {
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
   deletedAt           DateTime?
+  promotion_price     Decimal?
+  booking_date        DateTime?
 }
 
 model ServiceCategory {
