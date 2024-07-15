@@ -35,7 +35,7 @@ router.delete('/services/:serviceId',deleteService)
 router.get('/services',getAllServices)
 
 //
-router.get('/services/selected_categories/:selectedCategoryIds',getAllServicesBySelectedCategory)
+router.get('/services/selected_categories/:selectedCategoryIds/location/:location', getAllServicesBySelectedCategory);
 
 
 

@@ -220,7 +220,7 @@ exports.getAllServices = async (req, res) => {
 
 exports.getAllServicesBySelectedCategory = async (req, res) => {
   try {
-    const { selectedCategoryIds } = req.params;
+    const { selectedCategoryIds, location } = req.params; // Assume location is passed as a param
     const results = JSON.parse(selectedCategoryIds);
 
     const services = await prisma.service.findMany({
@@ -229,6 +229,9 @@ exports.getAllServicesBySelectedCategory = async (req, res) => {
           service_category_id: categoryId,
         })),
         isBooked: false,
+        user: {
+          location: location // Filter by user location
+        }
       },
       include: {
         user: true, // Assuming the service has a relation with user
@@ -248,6 +251,7 @@ exports.getAllServicesBySelectedCategory = async (req, res) => {
     });
   }
 };
+
 
 
 exports.adminAddPromotion = async (req, res) => {
